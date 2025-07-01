@@ -10,20 +10,28 @@ import org.testng.annotations.Test;
 
 
 public class cart {
+	
+	private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+	
+	 
+	 public WebDriver getDriver() {
+		 return driver.get();
+	    }
 
-	WebDriver driver;
+	
 	@BeforeMethod
 	public void setUp() {
         System.setProperty("webdriver.chrome.driver", "./Driver/chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/v1/cart.html");
+        WebDriver localDriver = new ChromeDriver();
+        driver.set(localDriver);
+        getDriver().get("https://www.saucedemo.com/v1/cart.html");
     }
 	
 	//click on checkout button without any product in the cart
 	@Test
 	public void click_checkout() {
-		driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-		String currenturl = driver.getCurrentUrl();
+		getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+		String currenturl = getDriver().getCurrentUrl();
 		System.out.println(currenturl);
 		String expectedurl = "https://www.saucedemo.com/v1/checkout-step-one.html";
 		
@@ -37,8 +45,8 @@ public class cart {
 	//click on continue shopping button
 	@Test	
 	public void click_continue_shopping() {
-		driver.findElement(By.xpath("//a[normalize-space(text())='Continue Shopping']")).click();
-		String currenturl = driver.getCurrentUrl();
+		getDriver().findElement(By.xpath("//a[normalize-space(text())='Continue Shopping']")).click();
+		String currenturl = getDriver().getCurrentUrl();
 		System.out.println(currenturl);
 		String expectedurl = "https://www.saucedemo.com/v1/inventory.html";
 		
@@ -53,9 +61,9 @@ public class cart {
 	//click on cancel button
 	@Test
 	public void click_cancel() {
-		driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-		driver.findElement(By.xpath("//a[@class='cart_cancel_link btn_secondary']")).click();
-		String currenturl = driver.getCurrentUrl();
+		getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+		getDriver().findElement(By.xpath("//a[@class='cart_cancel_link btn_secondary']")).click();
+		String currenturl = getDriver().getCurrentUrl();
 		System.out.println(currenturl);
 		String expectedurl = "https://www.saucedemo.com/v1/cart.html";
 		
@@ -70,9 +78,9 @@ public class cart {
 	//click on continue after checkout 
 	@Test
 	public void click_continue() {
-		driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-		driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-		String currenturl = driver.getCurrentUrl();
+		getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+		getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+		String currenturl = getDriver().getCurrentUrl();
 		System.out.println(currenturl);
 		String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 		
@@ -87,10 +95,10 @@ public class cart {
 	//Enter only first name in the field and leave other two fields
 		@Test
 		public void Enter_firstname() {
-			driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-			driver.findElement(By.id("first-name")).sendKeys("a");
-			driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-			String currenturl = driver.getCurrentUrl();
+			getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+			getDriver().findElement(By.id("first-name")).sendKeys("a");
+			getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+			String currenturl = getDriver().getCurrentUrl();
 			System.out.println(currenturl);
 			String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 			
@@ -105,10 +113,10 @@ public class cart {
 		//Enter only last name in the field and leave other two fields
 				@Test
 				public void Enter_lastname() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("last-name")).sendKeys("a");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("last-name")).sendKeys("a");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -123,10 +131,10 @@ public class cart {
 			    //work zip code field only accept int values but it is working
 				@Test
 				public void Enter_Zipcode() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("postal-code")).sendKeys("a");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("postal-code")).sendKeys("a");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -140,12 +148,12 @@ public class cart {
 				//Enter all the vaild details in the field 
 				@Test
 				public void Enter_details() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("first-name")).sendKeys("Sadhiq");
-					driver.findElement(By.id("last-name")).sendKeys("Sadhiq");
-					driver.findElement(By.id("postal-code")).sendKeys("123546");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("first-name")).sendKeys("Sadhiq");
+					getDriver().findElement(By.id("last-name")).sendKeys("Sadhiq");
+					getDriver().findElement(By.id("postal-code")).sendKeys("123546");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -160,12 +168,12 @@ public class cart {
 				//Enter no. in all the field 
 				@Test
 				public void Enter_details2() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("first-name")).sendKeys("2");
-					driver.findElement(By.id("last-name")).sendKeys("3");
-					driver.findElement(By.id("postal-code")).sendKeys("123546");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("first-name")).sendKeys("2");
+					getDriver().findElement(By.id("last-name")).sendKeys("3");
+					getDriver().findElement(By.id("postal-code")).sendKeys("123546");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -180,12 +188,12 @@ public class cart {
 				//Enter spl. char. in all the field 
 				@Test
 				public void Enter_details3() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("first-name")).sendKeys("%");
-					driver.findElement(By.id("last-name")).sendKeys("@");
-					driver.findElement(By.id("postal-code")).sendKeys("&");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("first-name")).sendKeys("%");
+					getDriver().findElement(By.id("last-name")).sendKeys("@");
+					getDriver().findElement(By.id("postal-code")).sendKeys("&");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -200,12 +208,12 @@ public class cart {
 				//Enter Emoji in all the field 
 				@Test
 				public void Enter_details4() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("first-name")).sendKeys("%");//in sendkeys enter emoji
-					driver.findElement(By.id("last-name")).sendKeys("@");//in sendkeys enter emoji
-					driver.findElement(By.id("postal-code")).sendKeys("&");//in sendkeys enter emoji
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("first-name")).sendKeys("%");//in sendkeys enter emoji
+					getDriver().findElement(By.id("last-name")).sendKeys("@");//in sendkeys enter emoji
+					getDriver().findElement(By.id("postal-code")).sendKeys("&");//in sendkeys enter emoji
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -220,12 +228,12 @@ public class cart {
 				//Enter only bracket in all the field 
 				@Test
 				public void Enter_details5() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("first-name")).sendKeys("[");
-					driver.findElement(By.id("last-name")).sendKeys("]");
-					driver.findElement(By.id("postal-code")).sendKeys("{}");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("first-name")).sendKeys("[");
+					getDriver().findElement(By.id("last-name")).sendKeys("]");
+					getDriver().findElement(By.id("postal-code")).sendKeys("{}");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -242,12 +250,12 @@ public class cart {
 				//Enter long char. in all the field 
 				@Test
 				public void Enter_details6() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("first-name")).sendKeys("dguisdbuiwfguidv");
-					driver.findElement(By.id("last-name")).sendKeys("sdjguisddsuhdjdvn");
-					driver.findElement(By.id("postal-code")).sendKeys("ugwuibwuidhwoeeoegh");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("first-name")).sendKeys("dguisdbuiwfguidv");
+					getDriver().findElement(By.id("last-name")).sendKeys("sdjguisddsuhdjdvn");
+					getDriver().findElement(By.id("postal-code")).sendKeys("ugwuibwuidhwoeeoegh");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -261,12 +269,12 @@ public class cart {
 				//Enter only letter in all the field 
 				@Test
 				public void Enter_details7() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("first-name")).sendKeys("d");
-					driver.findElement(By.id("last-name")).sendKeys("s");
-					driver.findElement(By.id("postal-code")).sendKeys("u");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("first-name")).sendKeys("d");
+					getDriver().findElement(By.id("last-name")).sendKeys("s");
+					getDriver().findElement(By.id("postal-code")).sendKeys("u");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -280,12 +288,12 @@ public class cart {
 				//Enter only superheros name in all the field 
 				@Test
 				public void Enter_details8() {
-					driver.findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
-					driver.findElement(By.id("first-name")).sendKeys("Hulk");
-					driver.findElement(By.id("last-name")).sendKeys("Ironman");
-					driver.findElement(By.id("postal-code")).sendKeys("Spider-man");
-					driver.findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().findElement(By.xpath("//a[normalize-space(text())='CHECKOUT']")).click();
+					getDriver().findElement(By.id("first-name")).sendKeys("Hulk");
+					getDriver().findElement(By.id("last-name")).sendKeys("Ironman");
+					getDriver().findElement(By.id("postal-code")).sendKeys("Spider-man");
+					getDriver().findElement(By.xpath("//input[@class='btn_primary cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-step-two.html";
 					
@@ -300,9 +308,9 @@ public class cart {
 				//click on second step continue button
 				@Test
 				public void click_secondcontinue() {
-					driver.get("https://www.saucedemo.com/v1/checkout-step-two.html");
-					driver.findElement(By.xpath("//a[@class='cart_cancel_link btn_secondary']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().get("https://www.saucedemo.com/v1/checkout-step-two.html");
+					getDriver().findElement(By.xpath("//a[@class='cart_cancel_link btn_secondary']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/inventory.html";
 					
@@ -318,9 +326,9 @@ public class cart {
 				//click on second step finish button
 				@Test
 				public void click_finish() {
-					driver.get("https://www.saucedemo.com/v1/checkout-step-two.html");
-					driver.findElement(By.xpath("//a[@class='btn_action cart_button']")).click();
-					String currenturl = driver.getCurrentUrl();
+					getDriver().get("https://www.saucedemo.com/v1/checkout-step-two.html");
+					getDriver().findElement(By.xpath("//a[@class='btn_action cart_button']")).click();
+					String currenturl = getDriver().getCurrentUrl();
 					System.out.println(currenturl);
 					String expectedurl = "https://www.saucedemo.com/v1/checkout-complete.html";
 					
@@ -339,6 +347,6 @@ public class cart {
 	
 	 @AfterMethod
 		public void tearDown() {
-		        driver.quit();
+		 getDriver().quit();
 		    }
 }
